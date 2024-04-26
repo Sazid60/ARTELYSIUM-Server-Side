@@ -31,9 +31,18 @@ async function run() {
         await client.connect();
         const artCollection = client.db('artDB').collection('arts')
         // Get add craftArts
-        app.get('/craftArts', async(req,res)=>{
+        app.get('/craftArts', async (req, res) => {
             const cursor = artCollection.find();
             const result = await cursor.toArray();
+            res.send(result)
+        })
+
+        // Get Specific Item
+        app.get('/craftArts/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id)
+            const query = { _id: new ObjectId(id) }
+            const result = await artCollection.findOne(query)
             res.send(result)
         })
 
