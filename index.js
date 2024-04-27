@@ -49,20 +49,20 @@ async function run() {
         // Get UsingEmail Id
         app.get('/myItems/:email', async (req, res) => {
             // console.log(req.params.email)
-            const result = await artCollection.find({user_email: req.params.email}).toArray()
+            const result = await artCollection.find({ user_email: req.params.email }).toArray()
             res.send(result)
         })
         // Update
-        app.put('/craftArts/:id', async (req, res) =>{
+        app.put('/craftArts/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) }
             const options = { upsert: true };
             const updatedCraftArts = req.body;
-         
+
             const craftArts = {
                 $set: {
-                    image: updatedCraftArts.image, 
-                    item_name: updatedCraftArts.item_name, 
+                    image: updatedCraftArts.image,
+                    item_name: updatedCraftArts.item_name,
                     subcategory_name: updatedCraftArts.subcategory_name,
                     price: updatedCraftArts.price,
                     rating: updatedCraftArts.rating,
@@ -84,6 +84,16 @@ async function run() {
             const result = await artCollection.insertOne(newCraftArt);
             res.send(result)
         })
+
+        // Delete
+        app.delete('/craftArts/:id', async (req, res) => {
+            const id = req.params.id
+            console.log('Please delete', id)
+            const query = { _id: new ObjectId(id) }
+            const result = await artCollection.deleteOne(query)
+            res.send(result)
+        })
+
 
         // Send a ping to confirm a successful connection
         await client.db("admin").command({ ping: 1 });
