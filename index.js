@@ -40,10 +40,35 @@ async function run() {
         // Get Specific Item
         app.get('/craftArts/:id', async (req, res) => {
             const id = req.params.id;
-            console.log(id)
+            // console.log(id)
             const query = { _id: new ObjectId(id) }
             const result = await artCollection.findOne(query)
             res.send(result)
+        })
+
+        // Update
+        app.put('/craftArts/:id', async (req, res) =>{
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const options = { upsert: true };
+            const updatedCraftArts = req.body;
+         
+            const craftArts = {
+                $set: {
+                    image: updatedCraftArts.image, 
+                    item_name: updatedCraftArts.item_name, 
+                    subcategory_name: updatedCraftArts.subcategory_name,
+                    price: updatedCraftArts.price,
+                    rating: updatedCraftArts.rating,
+                    customization: updatedCraftArts.customization,
+                    description: updatedCraftArts.description,
+                    processing_time: updatedCraftArts.processing_time,
+                    stock_status: updatedCraftArts.stock_status,
+                }
+            }
+
+            const result = await artCollection.updateOne(filter, craftArts, options);
+            res.send(result);
         })
 
         // Add Craft & Art
