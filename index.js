@@ -52,6 +52,14 @@ async function run() {
             const result = await artCollection.find({ user_email: req.params.email }).toArray()
             res.send(result)
         })
+
+        // Get Using Category
+        app.get('/categorizedData/:subcategory', async (req, res) => {
+            // console.log(req.params.email)
+            const result = await artCollection.find({ subcategory_name: req.params.subcategory}).toArray()
+            res.send(result)
+        })
+
         // Update
         app.put('/craftArts/:id', async (req, res) => {
             const id = req.params.id;
