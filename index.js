@@ -27,7 +27,7 @@ async function run() {
     try {
 
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
         const artCollection = client.db('artDB').collection('arts')
 
         // Get add craftArts
@@ -64,7 +64,7 @@ async function run() {
             res.send(result)
         })
 
-        // Update
+        // Update craft and Art Items 
         app.put('/craftArts/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) }
@@ -99,8 +99,8 @@ async function run() {
             res.send(result)
         })
 
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        // await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // await client.close();
     }
