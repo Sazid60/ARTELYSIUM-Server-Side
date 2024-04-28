@@ -1,6 +1,6 @@
-const express = require ('express')
-const { MongoClient, ServerApiVersion, ObjectId } = require ('mongodb');
-const cors = require ('cors');
+const express = require('express')
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express()
@@ -29,6 +29,7 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
         const artCollection = client.db('artDB').collection('arts')
+
         // Get add craftArts
         app.get('/craftArts', async (req, res) => {
             const cursor = artCollection.find();
@@ -52,7 +53,14 @@ async function run() {
 
         // Get Using Category
         app.get('/categorizedData/:subcategory', async (req, res) => {
-            const result = await artCollection.find({ subcategory_name: req.params.subcategory}).toArray()
+            const result = await artCollection.find({ subcategory_name: req.params.subcategory }).toArray()
+            res.send(result)
+        })
+        // Add Craft & Art
+        app.post('/craftArts', async (req, res) => {
+            const newCraftArt = req.body;
+            console.log(newCraftArt)
+            const result = await artCollection.insertOne(newCraftArt);
             res.send(result)
         })
 
@@ -81,13 +89,6 @@ async function run() {
             res.send(result);
         })
 
-        // Add Craft & Art
-        app.post('/craftArts', async (req, res) => {
-            const newCraftArt = req.body;
-            console.log(newCraftArt)
-            const result = await artCollection.insertOne(newCraftArt);
-            res.send(result)
-        })
 
         // Delete
         app.delete('/craftArts/:id', async (req, res) => {
